@@ -1,0 +1,734 @@
+﻿```html
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ІгроСвіт — світ ігор</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #071a14;
+            --card: #0d2b22;
+            --text: #ffffff;
+            --muted: #9db8ad;
+            --accent: #19c37d;
+            --accent2: #54e0b1;
+            --border: #1d493b;
+        }
+
+        body.light {
+            --bg: #eef8f3;
+            --card: #ffffff;
+            --text: #123026;
+            --muted: #5f766d;
+            --border: #cde2d9;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: 0.3s;
+        }
+
+        /* ШАПКА */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 7%;
+            background: rgba(7, 26, 20, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        body.light header {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+            .logo span {
+                color: var(--accent);
+            }
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+            nav a {
+                color: var(--text);
+                text-decoration: none;
+                transition: 0.2s;
+            }
+
+                nav a:hover {
+                    color: var(--accent2);
+                }
+
+        .theme-btn {
+            border: none;
+            background: var(--card);
+            color: var(--text);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* ГОЛОВНИЙ ЕКРАН */
+
+        .hero {
+            min-height: 430px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            background: radial-gradient(circle at 30% 30%, #19c37d44, transparent 35%), radial-gradient(circle at 70% 70%, #54e0b133, transparent 35%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 7vw, 75px);
+            margin-bottom: 20px;
+        }
+
+            .hero h1 span {
+                background: linear-gradient(90deg, var(--accent), var(--accent2));
+                -webkit-background-clip: text;
+                color: transparent;
+            }
+
+        .hero p {
+            color: var(--muted);
+            font-size: 19px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+            .hero-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 30px #19c37d55;
+            }
+
+        /* ОСНОВНА ЧАСТИНА */
+
+        main {
+            width: 86%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 35px;
+            margin-bottom: 35px;
+        }
+
+        /* ПОШУК І ФІЛЬТР */
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .search {
+            width: 300px;
+            padding: 13px 17px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            background: var(--card);
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        .filter {
+            padding: 13px 17px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        /* КАРТКИ ІГОР */
+
+        .games {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .game-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+            transition: 0.3s;
+            animation: appear 0.5s ease;
+        }
+
+            .game-card:hover {
+                transform: translateY(-8px);
+                border-color: var(--accent);
+                box-shadow: 0 15px 40px #00000033;
+            }
+
+        .game-image {
+            height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            background: linear-gradient( 135deg, var(--accent), var(--accent2) );
+        }
+
+        .game-info {
+            padding: 20px;
+        }
+
+            .game-info h3 {
+                font-size: 22px;
+                margin-bottom: 8px;
+            }
+
+        .genre {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 7px;
+            background: #19c37d22;
+            color: var(--accent2);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .rating {
+            color: #ffd166;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            color: var(--muted);
+            line-height: 1.5;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .details {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 9px;
+            background: var(--accent);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+            .details:hover {
+                background: var(--accent2);
+                color: #0b1e17;
+            }
+
+        /* ПРО САЙТ */
+
+        .about {
+            width: 86%;
+            max-width: 900px;
+            margin: 0 auto 70px;
+            text-align: center;
+        }
+
+            .about p {
+                color: var(--muted);
+                line-height: 1.8;
+            }
+
+        /* НИЖНЯ ЧАСТИНА */
+
+        footer {
+            text-align: center;
+            padding: 35px;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        /* МОДАЛЬНЕ ВІКНО */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 100;
+        }
+
+            .modal.active {
+                display: flex;
+            }
+
+        .modal-box {
+            width: 90%;
+            max-width: 550px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            animation: modalOpen 0.3s ease;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+        .modal-box h2 {
+            margin-bottom: 15px;
+        }
+
+        .modal-box p {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes modalOpen {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ДЛЯ ТЕЛЕФОНІВ */
+
+        @media (max-width: 650px) {
+            header {
+                padding: 15px 5%;
+            }
+
+            nav {
+                display: none;
+            }
+
+            main {
+                width: 90%;
+            }
+
+            .hero {
+                min-height: 380px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">
+            Ігро<span>Світ</span>
+        </div>
+
+        <nav>
+            <a href="#games">Ігри</a>
+            <a href="#about">Про сайт</a>
+        </nav>
+
+        <button class="theme-btn" onclick="toggleTheme()">
+            🌙
+        </button>
+    </header>
+
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+                Ласкаво просимо до
+                <span>ІгроСвіту</span>
+            </h1>
+
+            <p>
+                Знайди наступну гру, у яку захочеться грати годинами.
+                Переглядай жанри, порівнюй рейтинги та відкривай нові ігри.
+            </p>
+
+            <a class="hero-btn" href="#games">
+                Переглянути ігри
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <main id="games">
+
+        <h2 class="section-title">
+            🎮 Популярні ігри
+        </h2>
+
+        <div class="controls">
+
+            <input class="search"
+                   id="search"
+                   type="text"
+                   placeholder="🔎 Знайти гру..."
+                   oninput="filterGames()">
+
+            <select class="filter"
+                    id="genre"
+                    onchange="filterGames()">
+                <option value="all">Усі жанри</option>
+                <option value="action">Екшен</option>
+                <option value="rpg">RPG</option>
+                <option value="strategy">Стратегія</option>
+                <option value="adventure">Пригоди</option>
+            </select>
+
+        </div>
+
+
+        <div class="games" id="gamesList">
+
+            <div class="game-card"
+                 data-name="Кібер Квест"
+                 data-genre="action">
+
+                <div class="game-image">
+                    🤖
+                </div>
+
+                <div class="game-info">
+
+                    <span class="genre">
+                        Екшен
+                    </span>
+
+                    <h3>Кібер Квест</h3>
+
+                    <div class="rating">
+                        ⭐ 9.2 / 10
+                    </div>
+
+                    <p class="description">
+                        Футуристична пригода у величезному місті майбутнього.
+                    </p>
+
+                    <button class="details"
+                            onclick="showGame(
+                        'Кібер Квест',
+                        'Досліджуй велике місто майбутнього, виконуй завдання та розкривай таємниці могутніх корпорацій.'
+                    )">
+                        Детальніше
+                    </button>
+
+                </div>
+            </div>
+
+
+            <div class="game-card"
+                 data-name="Королівство Драконів"
+                 data-genre="rpg">
+
+                <div class="game-image">
+                    🐉
+                </div>
+
+                <div class="game-info">
+
+                    <span class="genre">
+                        RPG
+                    </span>
+
+                    <h3>Королівство Драконів</h3>
+
+                    <div class="rating">
+                        ⭐ 9.7 / 10
+                    </div>
+
+                    <p class="description">
+                        Величезний фентезійний світ, магія, дракони та стародавні таємниці.
+                    </p>
+
+                    <button class="details"
+                            onclick="showGame(
+                        'Королівство Драконів',
+                        'Стань героєм стародавнього королівства та вирушай у небезпечну подорож назустріч легендарним драконам.'
+                    )">
+                        Детальніше
+                    </button>
+
+                </div>
+            </div>
+
+
+            <div class="game-card"
+                 data-name="Командир Імперії"
+                 data-genre="strategy">
+
+                <div class="game-image">
+                    🏰
+                </div>
+
+                <div class="game-info">
+
+                    <span class="genre">
+                        Стратегія
+                    </span>
+
+                    <h3>Командир Імперії</h3>
+
+                    <div class="rating">
+                        ⭐ 8.9 / 10
+                    </div>
+
+                    <p class="description">
+                        Побудуй власну імперію, розвивай технології та перемагай суперників.
+                    </p>
+
+                    <button class="details"
+                            onclick="showGame(
+                        'Командир Імперії',
+                        'Створи могутню імперію, керуй ресурсами, розвивай міста та створюй власну стратегію перемоги.'
+                    )">
+                        Детальніше
+                    </button>
+
+                </div>
+            </div>
+
+
+            <div class="game-card"
+                 data-name="Загублений Острів"
+                 data-genre="adventure">
+
+                <div class="game-image">
+                    🏝️
+                </div>
+
+                <div class="game-info">
+
+                    <span class="genre">
+                        Пригоди
+                    </span>
+
+                    <h3>Загублений Острів</h3>
+
+                    <div class="rating">
+                        ⭐ 9.0 / 10
+                    </div>
+
+                    <p class="description">
+                        Таємничий острів, загадки та пригоди чекають на свого дослідника.
+                    </p>
+
+                    <button class="details"
+                            onclick="showGame(
+                        'Загублений Острів',
+                        'Вирушай на загадковий острів та спробуй розкрити таємницю зниклої експедиції.'
+                    )">
+                        Детальніше
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <section class="about" id="about">
+
+        <h2 class="section-title">
+            💚 Про ІгроСвіт
+        </h2>
+
+        <p>
+            ІгроСвіт — це навчальний сайт-каталог ігор.
+            Тут можна знаходити ігри за назвою, сортувати їх за жанрами,
+            переглядати рейтинг та читати короткий опис.
+        </p>
+
+    </section>
+
+
+    <footer>
+        © 2026 ІгроСвіт. Навчальний проєкт.
+    </footer>
+
+
+    <div class="modal" id="modal">
+
+        <div class="modal-box">
+
+            <button class="close" onclick="closeModal()">
+                ×
+            </button>
+
+            <h2 id="modalTitle"></h2>
+
+            <p id="modalText"></p>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+    function toggleTheme() {
+
+        document.body.classList.toggle("light");
+
+        const button =
+            document.querySelector(".theme-btn");
+
+        if (document.body.classList.contains("light")) {
+            button.textContent = "☀️";
+        } else {
+            button.textContent = "🌙";
+        }
+    }
+
+
+    function filterGames() {
+
+        const search =
+            document
+                .getElementById("search")
+                .value
+                .toLowerCase();
+
+        const genre =
+            document
+                .getElementById("genre")
+                .value;
+
+        const cards =
+            document.querySelectorAll(".game-card");
+
+        cards.forEach(card => {
+
+            const name =
+                card.dataset.name.toLowerCase();
+
+            const cardGenre =
+                card.dataset.genre;
+
+            const matchesSearch =
+                name.includes(search);
+
+            const matchesGenre =
+                genre === "all" ||
+                cardGenre === genre;
+
+            if (matchesSearch && matchesGenre) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+
+        });
+    }
+
+
+    function showGame(title, text) {
+
+        document.getElementById("modalTitle")
+            .textContent = title;
+
+        document.getElementById("modalText")
+            .textContent = text;
+
+        document.getElementById("modal")
+            .classList.add("active");
+    }
+
+
+    function closeModal() {
+
+        document.getElementById("modal")
+            .classList.remove("active");
+    }
+
+
+    document.getElementById("modal")
+        .addEventListener("click", function(event) {
+
+            if (event.target === this) {
+                closeModal();
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
+```
